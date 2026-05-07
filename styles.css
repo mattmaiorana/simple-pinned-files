@@ -19,7 +19,7 @@
 .simple-pinned-files-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .simple-pinned-files-empty {
@@ -32,26 +32,47 @@
 .simple-pinned-files-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 8px;
-  border-radius: var(--radius-s);
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-m, 6px);
   cursor: pointer;
   color: var(--text-normal);
   user-select: none;
-}
-
-.simple-pinned-files-row:hover {
   background-color: var(--background-modifier-hover);
 }
 
+.simple-pinned-files-row:hover,
 .simple-pinned-files-row.is-active {
-  background-color: var(--nav-item-background-active, var(--background-modifier-hover));
-  color: var(--nav-item-color-active, var(--text-normal));
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.simple-pinned-files-row:hover .simple-pinned-files-subtitle,
+.simple-pinned-files-row.is-active .simple-pinned-files-subtitle {
+  color: var(--text-on-accent);
+  opacity: 0.85;
+}
+
+.simple-pinned-files-row:hover .simple-pinned-files-pin-icon,
+.simple-pinned-files-row.is-active .simple-pinned-files-pin-icon {
+  color: var(--text-on-accent);
+  opacity: 1;
 }
 
 .simple-pinned-files-row.is-missing {
   opacity: 0.55;
   cursor: default;
+}
+
+.simple-pinned-files-row.is-missing:hover {
+  background-color: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.simple-pinned-files-row.is-missing:hover .simple-pinned-files-subtitle,
+.simple-pinned-files-row.is-missing:hover .simple-pinned-files-pin-icon {
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .simple-pinned-files-row-main {
@@ -73,16 +94,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .simple-pinned-files-pin-icon {
   flex-shrink: 0;
-  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-faint);
-  opacity: 0.55;
-}
-
-.simple-pinned-files-row:hover .simple-pinned-files-pin-icon {
-  opacity: 0.85;
+  --icon-size: 14px;
+  --icon-stroke: 2px;
+  opacity: 0.7;
 }

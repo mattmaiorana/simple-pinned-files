@@ -1,4 +1,4 @@
-import { ItemView, Menu, TFile, WorkspaceLeaf } from "obsidian";
+import { ItemView, Menu, setIcon, TFile, WorkspaceLeaf } from "obsidian";
 import type SimplePinnedFilesPlugin from "./main";
 
 export const VIEW_TYPE_PINNED_FILES = "simple-pinned-files-view";
@@ -24,10 +24,12 @@ export class PinnedFilesView extends ItemView {
   }
 
   async onOpen(): Promise<void> {
+    this.plugin.viewInstances.add(this);
     this.render();
   }
 
   async onClose(): Promise<void> {
+    this.plugin.viewInstances.delete(this);
     this.contentEl.empty();
   }
 
@@ -57,6 +59,7 @@ export class PinnedFilesView extends ItemView {
       const file = abstract instanceof TFile ? abstract : null;
 
       const row = list.createDiv({ cls: "simple-pinned-files-row" });
+      row.dataset.path = path;
       if (path === activePath) row.addClass("is-active");
       if (!file) row.addClass("is-missing");
 
@@ -70,7 +73,8 @@ export class PinnedFilesView extends ItemView {
         text: this.subtitleFromPath(path),
       });
 
-      row.createDiv({ cls: "simple-pinned-files-pin-icon", text: "📌" });
+      const iconEl = row.createDiv({ cls: "simple-pinned-files-pin-icon" });
+      setIcon(iconEl, "pin");
 
       row.addEventListener("click", async (evt) => {
         if (!file) return;
@@ -100,6 +104,17 @@ export class PinnedFilesView extends ItemView {
         menu.showAtMouseEvent(evt);
       });
     }
+  }
+
+  updateActiveStates(): void {
+    const activePath = this.app.workspace.getActiveFile()?.path;
+    const rows = this.contentEl.querySelectorAll<HTMLElement>(
+      ".simple-pinned-files-row"
+    );
+    rows.forEach((row) => {
+      if (row.dataset.path === activePath) row.addClass("is-active");
+      else row.removeClass("is-active");
+    });
   }
 
   private titleFromPath(path: string, file: TFile | null): string {

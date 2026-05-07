@@ -15,6 +15,7 @@ import { removeExplorerStyles, updateExplorerStyles } from "./explorer-style";
 
 export default class SimplePinnedFilesPlugin extends Plugin {
   settings: SimplePinnedFilesSettings = { ...DEFAULT_SETTINGS };
+  viewInstances: Set<PinnedFilesView> = new Set();
 
   async onload(): Promise<void> {
     await this.loadSettings();
@@ -76,7 +77,7 @@ export default class SimplePinnedFilesPlugin extends Plugin {
 
     this.registerEvent(
       this.app.workspace.on("active-leaf-change", () => {
-        this.refreshView();
+        this.updateActiveStates();
       })
     );
 
@@ -149,11 +150,11 @@ export default class SimplePinnedFilesPlugin extends Plugin {
   }
 
   refreshView(): void {
-    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_PINNED_FILES);
-    for (const leaf of leaves) {
-      const view = leaf.view;
-      if (view instanceof PinnedFilesView) view.render();
-    }
+    for (const view of this.viewInstances) view.render();
+  }
+
+  updateActiveStates(): void {
+    for (const view of this.viewInstances) view.updateActiveStates();
   }
 
   updateExplorerStyles(): void {

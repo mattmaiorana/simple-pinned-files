@@ -38,9 +38,6 @@ export class PinnedFilesView extends ItemView {
     container.empty();
     container.addClass("simple-pinned-files-view");
 
-    const heading = container.createDiv({ cls: "simple-pinned-files-heading" });
-    heading.createEl("h3", { text: "Pinned Files" });
-
     const list = container.createDiv({ cls: "simple-pinned-files-list" });
 
     const paths = this.plugin.settings.pinnedPaths;

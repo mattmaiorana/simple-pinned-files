@@ -2,20 +2,6 @@
   padding: 0.5rem 0.25rem;
 }
 
-.simple-pinned-files-heading {
-  padding: 0 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.simple-pinned-files-heading h3 {
-  margin: 0.25rem 0;
-  font-size: var(--font-ui-medium);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-}
-
 .simple-pinned-files-list {
   display: flex;
   flex-direction: column;

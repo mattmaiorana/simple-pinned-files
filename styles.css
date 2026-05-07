@@ -1,0 +1,88 @@
+.simple-pinned-files-view {
+  padding: 0.5rem 0.25rem;
+}
+
+.simple-pinned-files-heading {
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.simple-pinned-files-heading h3 {
+  margin: 0.25rem 0;
+  font-size: var(--font-ui-medium);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.simple-pinned-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.simple-pinned-files-empty {
+  padding: 0.75rem;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  line-height: 1.4;
+}
+
+.simple-pinned-files-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  color: var(--text-normal);
+  user-select: none;
+}
+
+.simple-pinned-files-row:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+.simple-pinned-files-row.is-active {
+  background-color: var(--nav-item-background-active, var(--background-modifier-hover));
+  color: var(--nav-item-color-active, var(--text-normal));
+}
+
+.simple-pinned-files-row.is-missing {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.simple-pinned-files-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.simple-pinned-files-title {
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simple-pinned-files-subtitle {
+  font-size: var(--font-ui-smaller, 11px);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.simple-pinned-files-pin-icon {
+  flex-shrink: 0;
+  font-size: 0.8em;
+  color: var(--text-faint);
+  opacity: 0.55;
+}
+
+.simple-pinned-files-row:hover .simple-pinned-files-pin-icon {
+  opacity: 0.85;
+}

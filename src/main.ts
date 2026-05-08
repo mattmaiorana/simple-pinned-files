@@ -86,7 +86,7 @@ export default class SimplePinnedFilesPlugin extends Plugin {
     this.app.workspace.onLayoutReady(() => {
       this.updateExplorerStyles();
       if (this.settings.openViewOnStartup) {
-        void this.activateView();
+        void this.ensurePinnedView();
       }
     });
   }
@@ -172,6 +172,14 @@ export default class SimplePinnedFilesPlugin extends Plugin {
     if (!leaf) return;
     await leaf.setViewState({ type: VIEW_TYPE_PINNED_FILES, active: true });
     workspace.revealLeaf(leaf);
+  }
+
+  private async ensurePinnedView(): Promise<void> {
+    const { workspace } = this.app;
+    if (workspace.getLeavesOfType(VIEW_TYPE_PINNED_FILES).length > 0) return;
+    const leaf = workspace.getLeftLeaf(false);
+    if (!leaf) return;
+    await leaf.setViewState({ type: VIEW_TYPE_PINNED_FILES, active: false });
   }
 
   private handleRename(file: TAbstractFile, oldPath: string): void {

@@ -24,8 +24,10 @@ export class SimplePinnedFilesSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName("Open view on startup")
-      .setDesc("Automatically reveal the Pinned Files view when Obsidian starts.")
+      .setName("Add Pinned Files to sidebar on startup")
+      .setDesc(
+        "Ensure the Pinned Files view is available in the left sidebar when Obsidian starts. The view will not steal focus from your active sidebar tab."
+      )
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.openViewOnStartup)

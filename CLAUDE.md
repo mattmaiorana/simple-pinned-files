@@ -2,7 +2,7 @@
 
 ## Project status
 
-- This is a working MVP Obsidian plugin.
+- v1.0.0 — stable initial release.
 - The plugin is intentionally small and focused.
 - Core behavior is working:
   - pinned files view

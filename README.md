@@ -44,4 +44,4 @@ A small Obsidian plugin that adds a standalone Pinned Files view for quickly acc
 
 ## Status
 
-MVP / early development.
+v1.0.0 — stable initial release.

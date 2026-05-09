@@ -65,13 +65,13 @@
   align-items: center;
   justify-content: center;
   color: var(--text-faint);
-  --icon-size: 12px;
-  --icon-stroke: 1.75px;
-  opacity: 0.5;
+  --icon-size: 14px;
+  --icon-stroke: 2px;
+  opacity: 0.55;
 }
 
 .simple-pinned-files-row:hover .simple-pinned-files-pin-icon,
 .simple-pinned-files-row.is-active .simple-pinned-files-pin-icon {
-  color: currentColor;
-  opacity: 0.8;
+  color: var(--text-faint);
+  opacity: 0.55;
 }

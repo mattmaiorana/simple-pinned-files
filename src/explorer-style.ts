@@ -32,18 +32,18 @@ export function updateExplorerStyles(paths: string[]): void {
   el.textContent = `
 ${baseSelectors} {
   position: relative;
-  padding-right: 22px;
+  padding-right: 24px;
 }
 ${afterSelectors} {
   content: "";
   position: absolute;
   right: 6px;
   top: 50%;
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   transform: translateY(-50%);
-  background-color: var(--text-muted);
-  opacity: 0.6;
+  background-color: var(--text-faint);
+  opacity: 0.55;
   pointer-events: none;
   -webkit-mask-image: url("${PIN_SVG_URI}");
   mask-image: url("${PIN_SVG_URI}");

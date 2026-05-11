@@ -1,6 +1,6 @@
 {
   "name": "obsidian-simple-pinned-files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple, standalone pinned files view for Obsidian.",
   "main": "main.js",
   "scripts": {

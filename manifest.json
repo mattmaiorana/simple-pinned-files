@@ -1,7 +1,7 @@
 {
   "id": "simple-pinned-files",
   "name": "Simple Pinned Files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.4.16",
   "description": "A simple, standalone pinned files view for Obsidian.",
   "author": "Matt Maiorana",

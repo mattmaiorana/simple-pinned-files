@@ -2,7 +2,7 @@
 
 ## Project status
 
-- v1.0.0 — stable initial release.
+- v1.0.1 — stable. v1.0.0 was the initial stable release; v1.0.1 added sync-aware live reload.
 - The plugin is intentionally small and focused.
 - Core behavior is working:
   - pinned files view

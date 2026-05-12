@@ -48,4 +48,4 @@ The plugin's pin list lives in its own `data.json`, which Obsidian Sync replicat
 
 ## Status
 
-v1.0.1 — stable. See [CHANGELOG.md](CHANGELOG.md) for release notes.
+v1.0.2 — stable. See [CHANGELOG.md](CHANGELOG.md) for release notes.

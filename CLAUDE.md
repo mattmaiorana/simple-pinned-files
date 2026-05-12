@@ -2,7 +2,7 @@
 
 ## Project status
 
-- v1.0.1 — stable. v1.0.0 was the initial stable release; v1.0.1 added sync-aware live reload.
+- v1.0.2 — stable. v1.0.0 was the initial stable release; v1.0.1 added sync-aware live reload; v1.0.2 hardened the sync/reload path, switched pinned-row events to delegation, and added defensive pinned-path normalization.
 - The plugin is intentionally small and focused.
 - Core behavior is working:
   - pinned files view

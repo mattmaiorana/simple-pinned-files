@@ -2,6 +2,18 @@
 
 All notable changes to Simple Pinned Files will be documented in this file.
 
+## [1.0.3] - 2026-05-20
+
+### Changed
+
+- Updated the plugin description for Obsidian community plugin checker compliance.
+- Added a README screenshot showing the plugin UI.
+- Aligned package metadata with the public plugin description.
+
+### Notes
+
+- No plugin behavior changes.
+
 ## [1.0.2] - 2026-05-12
 
 ### Fixed

@@ -29,14 +29,10 @@ Simple Pinned Files adds a compact Pinned Files view to the sidebar. It is desig
 
 ## Installation
 
-### From Obsidian Community Plugins
-
-_Coming soon._ Once accepted into the community plugin directory, install it from **Settings → Community plugins** inside Obsidian.
-
 ### Manual installation from a GitHub release
 
 1. Download `manifest.json`, `main.js`, and `styles.css` from the latest [release](../../releases).
-2. Create the folder `<vault>/.obsidian/plugins/simple-pinned-files/` in your vault.
+2. Inside your vault, create the folder `.obsidian/plugins/simple-pinned-files/`.
 3. Copy the three files into that folder.
 4. Reload Obsidian and enable **Simple Pinned Files** in **Settings → Community plugins**.
 
@@ -45,7 +41,7 @@ _Coming soon._ Once accepted into the community plugin directory, install it fro
 1. Clone this repository.
 2. `npm install`
 3. `npm run build`
-4. Copy `manifest.json`, `main.js`, and `styles.css` into `<vault>/.obsidian/plugins/simple-pinned-files/`.
+4. Copy `manifest.json`, `main.js`, and `styles.css` into the `.obsidian/plugins/simple-pinned-files/` folder inside your vault.
 5. Enable the plugin in **Settings → Community plugins**.
 
 ## Usage
@@ -70,7 +66,7 @@ Pinned files are stored in the plugin's own `data.json`. If Obsidian Sync is con
 This plugin is intentionally conservative about what it touches.
 
 - It does not create, delete, rename, move, or modify any notes, attachments, folders, frontmatter, or bookmarks.
-- The only file it ever writes is its own settings at `<vault>/.obsidian/plugins/simple-pinned-files/data.json`.
+- The only file it ever writes is its own settings file at `.obsidian/plugins/simple-pinned-files/data.json` inside your vault.
 - Rename and delete handlers only update stored pin paths after Obsidian reports that a file or folder has changed. They never originate a vault change.
 - Native File Explorer pin indicators are decoration only and do not interfere with native click, right-click, or drag behavior.
 

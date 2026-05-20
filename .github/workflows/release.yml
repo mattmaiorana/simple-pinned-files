@@ -4,11 +4,21 @@ on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (re)build and (re)publish, e.g. 1.0.5"
+        required: true
+        type: string
 
 permissions:
   contents: write
   attestations: write
   id-token: write
+
+concurrency:
+  group: release-${{ github.ref_name || inputs.tag }}
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -16,8 +26,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Resolve target tag
+        id: tag
+        env:
+          DISPATCH_TAG: ${{ inputs.tag }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            tag="$DISPATCH_TAG"
+          else
+            tag="$GITHUB_REF_NAME"
+          fi
+          if [ -z "$tag" ]; then
+            echo "::error::Could not resolve target tag"
+            exit 1
+          fi
+          if ! printf '%s' "$tag" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Tag '$tag' is not a valid unprefixed semver (X.Y.Z)"
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "Target tag: $tag"
+
+      - name: Check out repository at tag
         uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -27,6 +61,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
 
       - name: Build plugin
         run: npm run build
@@ -44,15 +81,62 @@ jobs:
             exit 1
           fi
 
-      - name: Verify manifest version matches pushed tag
+      - name: Verify manifest version matches tag
         run: |
-          tag="${GITHUB_REF_NAME}"
+          tag="${{ steps.tag.outputs.tag }}"
           manifest_version=$(node -p "require('./manifest.json').version")
           if [ "$tag" != "$manifest_version" ]; then
-            echo "::error::Pushed tag '$tag' does not match manifest.json version '$manifest_version'"
+            echo "::error::Tag '$tag' does not match manifest.json version '$manifest_version'"
             exit 1
           fi
           echo "Tag '$tag' matches manifest version '$manifest_version'"
+
+      - name: Extract release notes from CHANGELOG.md
+        run: |
+          tag="${{ steps.tag.outputs.tag }}"
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md is missing"
+            exit 1
+          fi
+
+          awk -v tag="$tag" '
+            BEGIN { in_section = 0; marker = "## [" tag "]" }
+            /^## \[/ {
+              if (in_section) { exit }
+              if (substr($0, 1, length(marker)) == marker) {
+                in_section = 1
+                next
+              }
+              next
+            }
+            in_section { print }
+          ' CHANGELOG.md > /tmp/release-notes-raw.md
+
+          if [ ! -s /tmp/release-notes-raw.md ]; then
+            echo "::error::No section found in CHANGELOG.md for [$tag], or section is empty"
+            exit 1
+          fi
+
+          # Trim leading blank lines.
+          awk 'NF || started { started = 1; print }' /tmp/release-notes-raw.md > /tmp/release-notes-step1.md
+          # Trim trailing blank lines.
+          awk '
+            { lines[NR] = $0 }
+            END {
+              last = NR
+              while (last > 0 && lines[last] ~ /^[[:space:]]*$/) last--
+              for (i = 1; i <= last; i++) print lines[i]
+            }
+          ' /tmp/release-notes-step1.md > /tmp/release-notes.md
+
+          if [ ! -s /tmp/release-notes.md ]; then
+            echo "::error::Release notes body for [$tag] is empty after trimming"
+            exit 1
+          fi
+
+          echo "--- /tmp/release-notes.md ---"
+          cat /tmp/release-notes.md
+          echo "--- end ---"
 
       - name: Generate artifact attestations
         uses: actions/attest-build-provenance@v1
@@ -62,15 +146,19 @@ jobs:
             main.js
             styles.css
 
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          generate_release_notes: true
-          files: |
-            manifest.json
-            main.js
-            styles.css
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ steps.tag.outputs.tag }}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release '$tag' exists. Updating notes and assets."
+            gh release edit "$tag" --notes-file /tmp/release-notes.md
+            gh release upload "$tag" manifest.json main.js styles.css --clobber
+          else
+            echo "Release '$tag' does not exist. Creating."
+            gh release create "$tag" \
+              --title "$tag" \
+              --notes-file /tmp/release-notes.md \
+              manifest.json main.js styles.css
+          fi

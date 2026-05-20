@@ -21,14 +21,10 @@ The initial README polish pass and the GitHub Actions release workflow are now i
 
 ## Release automation refinements
 
-`.github/workflows/release.yml` currently uses GitHub's auto-generated release notes. Potential refinements:
+`.github/workflows/release.yml` now extracts the matching `CHANGELOG.md` section as the release body, supports `workflow_dispatch` for re-running an existing tag, uses a tag-keyed `concurrency:` group, generates artifact attestations, and creates-or-updates the release with clobber-uploaded assets. Remaining ideas:
 
-- Optionally extract release notes for the tagged version from `CHANGELOG.md` and pass them to `softprops/action-gh-release` via `body` or `body_path` instead of using `generate_release_notes: true`. This keeps the GitHub release body in sync with the changelog without manual editing. Requires a small extraction step (e.g. `awk`/`sed`) that captures everything between the current version's `##` header and the next `##` header.
-- Consider adding a workflow-dispatch trigger so a release can also be cut manually for testing without pushing a tag (would create a draft release).
-- Consider pinning `actions/checkout`, `actions/setup-node`, `actions/attest-build-provenance`, and `softprops/action-gh-release` to commit SHAs instead of major-version tags for stricter supply-chain hygiene. Trade-off: more maintenance to bump them deliberately.
-- Add a `concurrency:` group to the workflow keyed on the tag name (e.g. `release-${{ github.ref_name }}`) so a re-pushed tag (after a manifest fix) cannot race with the original run's release-creation step.
-- The next release's CHANGELOG entry should mention the addition of `.github/workflows/release.yml` and the GitHub artifact attestations on release assets. The workflow was added after 1.0.4 was published, so this belongs in the next entry rather than retroactively in 1.0.4.
-- After the first workflow-built release, consider pruning the unreleased `0.1.0` entry from `versions.json` if you want `versions.json` to reflect only versions with actual GitHub releases.
+- Consider pinning `actions/checkout`, `actions/setup-node`, and `actions/attest-build-provenance` to commit SHAs instead of major-version tags for stricter supply-chain hygiene. Trade-off: more maintenance to bump them deliberately.
+- Consider pruning the unreleased `0.1.0` entry from `versions.json` if you want `versions.json` to reflect only versions with actual GitHub releases.
 
 ## Reliability and edge cases
 

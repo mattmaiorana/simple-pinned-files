@@ -84,8 +84,10 @@ Important bugs and fixes to remember:
 
 - Public repository: `mattmaiorana/simple-pinned-files`.
 - Release tags must exactly match the `version` field in `manifest.json` and must **not** use a `v` prefix. Example: tag `1.0.5`, not `v1.0.5`.
-- `.github/workflows/release.yml` triggers on semver tag pushes (`[0-9]+.[0-9]+.[0-9]+`). It checks out the repo, runs `npm ci` and `npm run build`, verifies that `manifest.json` / `main.js` / `styles.css` exist, verifies the pushed tag matches `manifest.json` version, generates GitHub artifact attestations via `actions/attest-build-provenance` for all three files, and creates the GitHub Release with those three files attached.
+- `.github/workflows/release.yml` triggers on semver tag pushes (`[0-9]+.[0-9]+.[0-9]+`) and on manual `workflow_dispatch` with a required `tag` input. It checks out the **tagged commit**, runs `npm ci`, `npx tsc --noEmit`, and `npm run build`, verifies that `manifest.json` / `main.js` / `styles.css` exist, verifies the resolved tag matches `manifest.json` version, extracts the matching `## [<tag>] - YYYY-MM-DD` section from `CHANGELOG.md` as the release body, generates GitHub artifact attestations via `actions/attest-build-provenance` for all three files, and then **creates or updates** the GitHub Release — clobber-uploading `manifest.json`, `main.js`, and `styles.css`.
+- A `concurrency:` group keyed on the tag prevents racing runs for the same tag.
 - The workflow needs three permissions: `contents: write`, `attestations: write`, `id-token: write`. They are declared in the workflow file; no manual secrets configuration is required.
+- Screenshots and other images live in the repository (e.g. `images/`) and the README. They are **not** uploaded as release assets — only `manifest.json`, `main.js`, and `styles.css` are.
 
 ### Future release steps
 
@@ -138,6 +140,7 @@ f. Verify the release and attestations:
   git push origin 1.x.x
   ```
 - Workflow built successfully but the release page is missing assets: re-run the failed job from the GitHub Actions UI; the build step is deterministic.
+- To re-publish an existing tag (e.g. to re-attest assets or refresh release notes), use **Actions → Release → Run workflow** and enter the tag in the `tag` input. The workflow checks out the tagged commit, so the `CHANGELOG.md` body used is the one in that tag's commit — not the current `main`. To pick up a CHANGELOG edit on `main` for an already-released tag, either move the tag (invasive) or update the release body directly with `gh release edit <tag> --notes-file ...`.
 
 ## Testing checklist
 

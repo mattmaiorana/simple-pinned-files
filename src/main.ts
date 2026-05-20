@@ -155,7 +155,7 @@ export default class SimplePinnedFilesPlugin extends Plugin {
       const raw = (await this.loadData()) as
         | Partial<SimplePinnedFilesSettings>
         | null;
-      if (this.unloaded) return;
+      if (this.unloaded || this.saveCount > 0) return;
       const next: SimplePinnedFilesSettings = {
         ...DEFAULT_SETTINGS,
         ...(raw ?? {}),

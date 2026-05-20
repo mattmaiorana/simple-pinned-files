@@ -2,7 +2,7 @@
 
 ## Project status
 
-- v1.0.4 — stable. v1.0.0 was the initial stable release; v1.0.1 added sync-aware live reload; v1.0.2 hardened the sync/reload path, switched pinned-row events to delegation, and added defensive pinned-path normalization; v1.0.3 was a publication-readiness patch (plugin description compliance, README screenshot, package metadata alignment); v1.0.4 cleared the remaining Obsidian plugin checker warnings (replaced `builtin-modules` with Node's `node:module`, removed placeholder-like README content). No behavior changes in either 1.0.3 or 1.0.4.
+- v1.0.5 — stable. v1.0.0 was the initial stable release; v1.0.1 added sync-aware live reload; v1.0.2 hardened the sync/reload path, switched pinned-row events to delegation, and added defensive pinned-path normalization; v1.0.3 was a publication-readiness patch (plugin description compliance, README screenshot, package metadata alignment); v1.0.4 cleared the remaining Obsidian plugin checker warnings (replaced `builtin-modules` with Node's `node:module`, removed placeholder-like README content); v1.0.5 tightened the polling reload's `saveCount` re-check after `await loadData()` and added the `.github/workflows/release.yml` workflow that creates attested releases from semver tags. No user-visible behavior changes in 1.0.3, 1.0.4, or 1.0.5.
 - The plugin is intentionally small and focused.
 - Core behavior is working:
   - pinned files view

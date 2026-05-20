@@ -2,6 +2,22 @@
 
 All notable changes to Simple Pinned Files will be documented in this file.
 
+## [1.0.5] - 2026-05-20
+
+### Fixed
+
+- Tightened sync/live-reload race handling by re-checking `saveCount` after loading plugin data from disk.
+
+### Added
+
+- Added a GitHub Actions release workflow for future tagged releases.
+- The release workflow builds the plugin, verifies release assets, checks that the tag matches `manifest.json`, uploads `manifest.json`, `main.js`, and `styles.css`, and generates GitHub artifact attestations.
+
+### Documentation
+
+- Updated release-process documentation for future Claude Code sessions.
+- Added future-plan notes from the final pre-submission code review.
+
 ## [1.0.4] - 2026-05-20
 
 ### Changed

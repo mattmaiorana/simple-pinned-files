@@ -2,6 +2,18 @@
 
 All notable changes to Simple Pinned Files will be documented in this file.
 
+## [1.0.4] - 2026-05-20
+
+### Changed
+
+- Replaced the `builtin-modules` package in the build configuration with Node's built-in `builtinModules` from `node:module`.
+- Removed placeholder-like README wording flagged by the Obsidian plugin checker.
+- Reworded manual installation paths to avoid angle-bracket placeholders.
+
+### Notes
+
+- No plugin behavior changes.
+
 ## [1.0.3] - 2026-05-20
 
 ### Changed

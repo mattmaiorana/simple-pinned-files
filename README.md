@@ -31,7 +31,7 @@ Simple Pinned Files adds a compact Pinned Files view to the sidebar. It is desig
 
 ### Manual installation from a GitHub release
 
-1. Download `manifest.json`, `main.js`, and `styles.css` from the latest [release](../../releases).
+1. Download `manifest.json`, `main.js`, and `styles.css` from the latest release on the [GitHub Releases page](https://github.com/mattmaiorana/simple-pinned-files/releases).
 2. Inside your vault, create the folder `.obsidian/plugins/simple-pinned-files/`.
 3. Copy the three files into that folder.
 4. Reload Obsidian and enable **Simple Pinned Files** in **Settings → Community plugins**.

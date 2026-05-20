@@ -80,6 +80,65 @@ Important bugs and fixes to remember:
 - `git add .`
 - `git commit -m "<message>"`
 
+## Release process
+
+- Public repository: `mattmaiorana/simple-pinned-files`.
+- Release tags must exactly match the `version` field in `manifest.json` and must **not** use a `v` prefix. Example: tag `1.0.5`, not `v1.0.5`.
+- `.github/workflows/release.yml` triggers on semver tag pushes (`[0-9]+.[0-9]+.[0-9]+`). It checks out the repo, runs `npm ci` and `npm run build`, verifies that `manifest.json` / `main.js` / `styles.css` exist, verifies the pushed tag matches `manifest.json` version, generates GitHub artifact attestations via `actions/attest-build-provenance` for all three files, and creates the GitHub Release with those three files attached.
+- The workflow needs three permissions: `contents: write`, `attestations: write`, `id-token: write`. They are declared in the workflow file; no manual secrets configuration is required.
+
+### Future release steps
+
+a. Update version files:
+   - `manifest.json`
+   - `package.json`
+   - `package-lock.json` (run `npm install` after editing `package.json`)
+   - `versions.json` (add a new entry with the same `minAppVersion` as the prior release unless intentionally raising it)
+   - `README.md` status line if it references the prior version
+   - `CLAUDE.md` status line if it references the prior version
+   - `CHANGELOG.md` (add a new `[x.y.z] - YYYY-MM-DD` entry above the previous release)
+
+b. Run:
+   - `npm install` (if `package.json` or `package-lock.json` changed)
+   - `npm run build`
+   - `git status`
+
+c. Commit and push `main`:
+   ```
+   git add -A
+   git commit -m "Bump to 1.x.x"
+   git push origin main
+   ```
+
+d. Create and push an annotated tag with **no `v` prefix**:
+   ```
+   git tag -a 1.x.x -m "1.x.x"
+   git push origin 1.x.x
+   ```
+
+e. Check the workflow:
+   ```
+   gh run list --limit 5
+   ```
+   Prefer `gh run list --limit 5` first after pushing a tag. `gh run watch` can fail if invoked immediately after the tag push sequence (the run may not be enumerable yet), so list first, then watch a specific run id if needed.
+
+f. Verify the release and attestations:
+   - GitHub → Releases → confirm the new release exists with `manifest.json`, `main.js`, `styles.css` attached.
+   - `gh attestation verify main.js --repo mattmaiorana/simple-pinned-files`
+   - `gh attestation verify styles.css --repo mattmaiorana/simple-pinned-files`
+   - `gh attestation verify manifest.json --repo mattmaiorana/simple-pinned-files`
+
+### If something goes wrong
+
+- Tag pushed but workflow failed at the "Verify manifest version matches pushed tag" step: fix `manifest.json`, then delete and re-push the tag:
+  ```
+  git tag -d 1.x.x
+  git push origin :refs/tags/1.x.x
+  git tag -a 1.x.x -m "1.x.x"
+  git push origin 1.x.x
+  ```
+- Workflow built successfully but the release page is missing assets: re-run the failed job from the GitHub Actions UI; the build step is deterministic.
+
 ## Testing checklist
 
 - Build succeeds.

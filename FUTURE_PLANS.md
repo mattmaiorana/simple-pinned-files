@@ -11,25 +11,20 @@ Possible future improvements for Simple Pinned Files. These are **not commitment
 
 ## Documentation / publication readiness
 
-- Do a dedicated README polish pass before submitting to the Obsidian community plugin directory.
-- Make the README more compelling and easier to skim for first-time users.
-- Add one or more screenshots or GIFs showing:
-  - the Pinned Files sidebar view
-  - the native File Explorer pin indicators
-  - the right-click Pin file / Unpin file flow
-- Tighten the opening description and feature list so the plugin's value is immediately clear.
-- Make sure installation instructions clearly distinguish:
-  - manual install from GitHub release assets
-  - installing from Obsidian Community Plugins once accepted
-  - building from source
-- Make sure the data-safety note is prominent but not overly long.
-- Make sure Obsidian Sync behavior is explained simply.
-- Review wording for the Obsidian community plugin listing, including:
-  - plugin description
-  - README intro
-  - screenshots
-  - release notes
-- Keep the README user-facing and avoid over-explaining implementation details.
+The initial README polish pass and the GitHub Actions release workflow are now in place. Remaining ideas:
+
+- Add a short GIF or additional screenshots beyond the current single image — e.g. the native File Explorer pin indicators, the right-click Pin/Unpin flow, or the Pinned Files view with several pinned items.
+- Once the plugin is accepted into the Obsidian community plugin directory, add an "Install from Obsidian Community Plugins" section to the README.
+- Review the eventual community plugin listing wording (description, screenshots, release notes) when submitting.
+- Consider a `CONTRIBUTING.md` if outside contributors start showing up. Keep it short — point at the existing dev commands and the release process documented in `CLAUDE.md`.
+
+## Release automation refinements
+
+`.github/workflows/release.yml` currently uses GitHub's auto-generated release notes. Potential refinements:
+
+- Optionally extract release notes for the tagged version from `CHANGELOG.md` and pass them to `softprops/action-gh-release` via `body` or `body_path` instead of using `generate_release_notes: true`. This keeps the GitHub release body in sync with the changelog without manual editing. Requires a small extraction step (e.g. `awk`/`sed`) that captures everything between the current version's `##` header and the next `##` header.
+- Consider adding a workflow-dispatch trigger so a release can also be cut manually for testing without pushing a tag (would create a draft release).
+- Consider pinning `actions/checkout`, `actions/setup-node`, `actions/attest-build-provenance`, and `softprops/action-gh-release` to commit SHAs instead of major-version tags for stricter supply-chain hygiene. Trade-off: more maintenance to bump them deliberately.
 
 ## Reliability and edge cases
 

@@ -99,6 +99,13 @@ Important implementation notes:
 - Consider adding a graceful warning or setting if native indicators cannot be applied.
 - Avoid `MutationObserver` and DOM mutation unless absolutely necessary.
 
+## Sidebar layout (deferred)
+
+- The extra empty space below a short pinned list when Pinned Files is stacked above the native File Explorer is likely caused by Obsidian's workspace pane minimum sizing / flex-allocation logic, not by plugin row or view padding. Manual resizing may not fully solve it because Obsidian appears to enforce a minimum height on stacked sidebar ItemViews.
+- A CSS override could try to reduce that minimum height or force the parent pane to shrink toward content height — for example a scoped `:has()` selector on the parent `.workspace-tabs` containing our `data-type` leaf with `flex-grow: 0 !important` and a relaxed `min-height`. This crosses into Obsidian's workspace layout behavior, not just styling our own view.
+- Risks: such a rule may interfere with manual resizing (the workspace resize handle could effectively become a no-op while Pinned Files is the active view in that pane) and is fragile to Obsidian DOM changes around `.workspace-tabs` / `.workspace-leaf-content`.
+- This probably belongs in the separate sidebar organization/styling companion project rather than in Simple Pinned Files. Simple Pinned Files should remain conservative by default and not reach into workspace layout from its own stylesheet.
+
 ## Things to avoid unless intentionally revisiting architecture
 
 - Do not rebuild Obsidian's File Explorer.

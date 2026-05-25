@@ -10,7 +10,7 @@ export interface SimplePinnedFilesSettings {
 export const DEFAULT_SETTINGS: SimplePinnedFilesSettings = {
   pinnedPaths: [],
   openViewOnStartup: true,
-  showSectionTitle: false,
+  showSectionTitle: true,
 };
 
 export class SimplePinnedFilesSettingTab extends PluginSettingTab {

@@ -55,7 +55,7 @@ Simple Pinned Files adds a compact Pinned Files view to the sidebar. It is desig
 ## Settings
 
 - **Add Pinned Files to sidebar on startup** — adds the Pinned Files view to the left sidebar when Obsidian starts. It will not steal focus from your active sidebar tab.
-- **Show section title** — when enabled, shows a small "Pinned Files" label above the pinned rows. Off by default.
+- **Show section title** — when enabled, shows a small "Pinned Files" label above the pinned rows. On by default.
 - **Clear pinned files** — removes every entry from the pinned list. This only clears the plugin's record; it does not delete the files themselves.
 
 ## Obsidian Sync

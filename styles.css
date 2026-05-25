@@ -11,7 +11,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-normal);
-  padding: 2px 0 6px 16px;
+  padding: 16px 0 6px 16px;
 }
 
 .simple-pinned-files-list {

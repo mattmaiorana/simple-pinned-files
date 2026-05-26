@@ -215,22 +215,52 @@ export class PinnedFilesView extends ItemView {
   private handleDrop(evt: DragEvent): void {
     const sourcePath = this.draggingPath;
     if (!sourcePath) return;
-    const row = this.rowFromEvent(evt);
-    if (!row) return;
-    const targetPath = row.dataset.path;
+    const target = this.resolveDropTarget(evt);
+    if (!target) return;
+    const targetPath = target.row.dataset.path;
     if (!targetPath || targetPath === sourcePath) return;
     evt.preventDefault();
-    const position =
-      this.dropPosition ?? this.dropPositionForRow(evt, row);
     const next = [...this.plugin.settings.pinnedPaths];
     const sourceIndex = next.indexOf(sourcePath);
     if (sourceIndex < 0) return;
     next.splice(sourceIndex, 1);
     let targetIndex = next.indexOf(targetPath);
     if (targetIndex < 0) return;
-    if (position === "below") targetIndex++;
+    if (target.position === "below") targetIndex++;
     next.splice(targetIndex, 0, sourcePath);
     void this.plugin.reorderPinnedPaths(next);
+  }
+
+  private resolveDropTarget(
+    evt: DragEvent
+  ): { row: HTMLElement; position: "above" | "below" } | null {
+    // Prefer the event's target row when it's a real, non-source row. Use the
+    // position the indicator was showing if the event row matches the stored
+    // indicator row; otherwise recompute from the drop event's coordinates.
+    const fromEvent = this.rowFromEvent(evt);
+    if (
+      fromEvent &&
+      fromEvent.dataset.path &&
+      fromEvent.dataset.path !== this.draggingPath
+    ) {
+      const position =
+        this.dropTargetRow === fromEvent && this.dropPosition
+          ? this.dropPosition
+          : this.dropPositionForRow(evt, fromEvent);
+      return { row: fromEvent, position };
+    }
+    // Fall back to the last valid indicator state from dragover. This covers
+    // drops that land in the 2px row gap, just past a row's edge, or anywhere
+    // else where the drop event's target isn't a row even though a valid
+    // indicator was visible to the user.
+    const stored = this.dropTargetRow;
+    const storedPosition = this.dropPosition;
+    if (!stored || !storedPosition) return null;
+    if (!stored.isConnected) return null;
+    if (!this.contentEl.contains(stored)) return null;
+    if (!stored.dataset.path) return null;
+    if (stored.dataset.path === this.draggingPath) return null;
+    return { row: stored, position: storedPosition };
   }
 
   private handleDragEnd(): void {

@@ -8,6 +8,7 @@ export class PinnedFilesView extends ItemView {
   private draggingPath: string | null = null;
   private dropTargetRow: HTMLElement | null = null;
   private dropPosition: "above" | "below" | null = null;
+  private dragImageEl: HTMLElement | null = null;
 
   constructor(leaf: WorkspaceLeaf, plugin: SimplePinnedFilesPlugin) {
     super(leaf);
@@ -157,10 +158,43 @@ export class PinnedFilesView extends ItemView {
     if (evt.dataTransfer) {
       evt.dataTransfer.setData("text/plain", path);
       evt.dataTransfer.effectAllowed = "move";
+      this.applyCustomDragImage(evt, row);
     }
     window.requestAnimationFrame(() => {
       if (this.draggingPath === path) row.addClass("is-dragging-source");
     });
+  }
+
+  private applyCustomDragImage(evt: DragEvent, row: HTMLElement): void {
+    if (!evt.dataTransfer) return;
+    const titleEl = row.querySelector<HTMLElement>(
+      ".simple-pinned-files-title"
+    );
+    const text = titleEl?.textContent ?? row.dataset.path ?? "";
+    if (!text) return;
+    const dragImage = document.createElement("div");
+    dragImage.textContent = text;
+    const s = dragImage.style;
+    s.position = "fixed";
+    s.top = "-1000px";
+    s.left = "-1000px";
+    s.pointerEvents = "none";
+    s.whiteSpace = "nowrap";
+    s.background = "transparent";
+    s.padding = "2px 4px";
+    s.fontSize = "var(--nav-item-size, var(--font-ui-small, 13px))";
+    s.fontWeight = "var(--nav-item-weight, inherit)";
+    s.lineHeight = "var(--line-height-tight, 1.3)";
+    s.color = "var(--text-normal)";
+    document.body.appendChild(dragImage);
+    this.dragImageEl = dragImage;
+    evt.dataTransfer.setDragImage(dragImage, 0, 0);
+    window.setTimeout(() => {
+      if (this.dragImageEl === dragImage) {
+        dragImage.remove();
+        this.dragImageEl = null;
+      }
+    }, 0);
   }
 
   private handleDragOver(evt: DragEvent): void {
@@ -208,6 +242,10 @@ export class PinnedFilesView extends ItemView {
       el.removeClass("is-dragging");
       el.removeClass("is-dragging-source");
     });
+    if (this.dragImageEl) {
+      this.dragImageEl.remove();
+      this.dragImageEl = null;
+    }
     this.draggingPath = null;
     this.dropTargetRow = null;
     this.dropPosition = null;

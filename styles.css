@@ -1,5 +1,5 @@
 .view-content.simple-pinned-files-view {
-  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-2, 8px);
+  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-2, 8px) 0;
 }
 
 .simple-pinned-files-section-title {

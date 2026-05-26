@@ -158,6 +158,9 @@ export class PinnedFilesView extends ItemView {
       evt.dataTransfer.setData("text/plain", path);
       evt.dataTransfer.effectAllowed = "move";
     }
+    window.requestAnimationFrame(() => {
+      if (this.draggingPath === path) row.addClass("is-dragging-source");
+    });
   }
 
   private handleDragOver(evt: DragEvent): void {
@@ -199,9 +202,12 @@ export class PinnedFilesView extends ItemView {
   private handleDragEnd(): void {
     this.clearDropIndicators();
     const dragging = this.contentEl.querySelectorAll<HTMLElement>(
-      ".simple-pinned-files-row.is-dragging"
+      ".simple-pinned-files-row.is-dragging, .simple-pinned-files-row.is-dragging-source"
     );
-    dragging.forEach((el) => el.removeClass("is-dragging"));
+    dragging.forEach((el) => {
+      el.removeClass("is-dragging");
+      el.removeClass("is-dragging-source");
+    });
     this.draggingPath = null;
     this.dropTargetRow = null;
     this.dropPosition = null;

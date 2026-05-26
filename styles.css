@@ -27,6 +27,7 @@
 }
 
 .simple-pinned-files-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--size-4-1, 4px);
@@ -57,16 +58,40 @@
   cursor: var(--cursor, grab);
 }
 
-.simple-pinned-files-row.is-dragging {
+/* Suppress the hover background on the drag source so the browser's drag
+   preview snapshot is captured cleanly without the hover fill. Applied
+   synchronously in dragstart, before the browser captures the drag image. */
+.simple-pinned-files-row.is-dragging,
+.simple-pinned-files-row.is-dragging:hover {
+  background-color: transparent;
+}
+
+/* Visible dimming of the source row in the list itself. Applied on the next
+   animation frame (after the drag image has been captured) so the floating
+   drag preview stays fully readable. */
+.simple-pinned-files-row.is-dragging-source {
   opacity: 0.45;
 }
 
-.simple-pinned-files-row.is-drop-above {
-  box-shadow: inset 0 2px 0 0 var(--interactive-accent);
+.simple-pinned-files-row.is-drop-above::before,
+.simple-pinned-files-row.is-drop-below::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--interactive-accent);
+  border-radius: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.simple-pinned-files-row.is-drop-below {
-  box-shadow: inset 0 -2px 0 0 var(--interactive-accent);
+.simple-pinned-files-row.is-drop-above::before {
+  top: 0;
+}
+
+.simple-pinned-files-row.is-drop-below::after {
+  bottom: 0;
 }
 
 .simple-pinned-files-row.is-missing {

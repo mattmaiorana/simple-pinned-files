@@ -1,5 +1,5 @@
 .view-content.simple-pinned-files-view {
-  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-2, 8px) 0;
+  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-2, 8px);
 }
 
 .simple-pinned-files-section-title {
@@ -11,7 +11,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-normal);
-  padding: 16px 0 6px 16px;
+  padding: 16px 0 6px var(--size-4-2, 8px);
 }
 
 .simple-pinned-files-list {
@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
   gap: var(--size-4-1, 4px);
-  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-1, 4px) 16px;
+  padding: var(--size-4-1, 4px) var(--size-4-2, 8px) var(--size-4-1, 4px) var(--size-4-2, 8px);
   margin: 0 0 2px;
   border-radius: var(--nav-item-border-radius, var(--radius-s, 4px));
   color: var(--nav-item-color, var(--text-muted));

@@ -15,6 +15,7 @@ Simple Pinned Files adds a compact Pinned Files view to the sidebar. It is desig
 - Open pinned files with one click.
 - Cmd/Ctrl-click to open in a new tab.
 - Right-click a pinned item to unpin it.
+- Drag and drop pinned rows to reorder them (desktop).
 - See subtle pin indicators in the native File Explorer.
 - Handles renamed or deleted pinned files automatically.
 - Supports Obsidian Sync by periodically reloading its own plugin data.
@@ -50,6 +51,7 @@ Simple Pinned Files adds a compact Pinned Files view to the sidebar. It is desig
 - Right-click a file in the native File Explorer → **Pin file** / **Unpin file**.
 - Click a pinned row to open the file. Cmd/Ctrl-click to open it in a new tab.
 - Right-click a pinned row in the Pinned Files view → **Unpin**.
+- Drag a pinned row up or down to reorder it (desktop only).
 - Hover a pinned row for a moment to see the file's full vault path in a tooltip.
 
 ## Settings
@@ -86,7 +88,7 @@ For manual installation, users only need these three files from a GitHub release
 
 ## Status
 
-v1.0.6 — stable. See [CHANGELOG.md](CHANGELOG.md) for release notes and [FUTURE_PLANS.md](FUTURE_PLANS.md) for ideas under consideration.
+v1.0.7 — stable. See [CHANGELOG.md](CHANGELOG.md) for release notes and [FUTURE_PLANS.md](FUTURE_PLANS.md) for ideas under consideration.
 
 ## License
 

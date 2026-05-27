@@ -2,6 +2,30 @@
 
 All notable changes to Simple Pinned Files will be documented in this file.
 
+## [1.0.7] - 2026-05-25
+
+### Added
+
+- Added desktop drag-and-drop reordering for pinned files within the Pinned Files view.
+- Added a text-only drag preview while reordering pinned files.
+
+### Changed
+
+- Improved drag-and-drop visuals with a straight drop indicator line.
+- Improved drag-and-drop reliability by using the last visible drop target when the drop event lands in a row gap or just outside a row.
+- Refined section title styling and spacing.
+- Made the "Show section title" setting enabled by default for fresh installs.
+- Refined pinned view row/title alignment while keeping hover and active backgrounds inset.
+
+### Documentation
+
+- Updated future plans to note deferred mobile/touch reorder and keyboard-accessible reorder work.
+
+### Notes
+
+- No data model or vault-content behavior changes.
+- Drag-and-drop reordering is currently desktop-only.
+
 ## [1.0.6] - 2026-05-24
 
 ### Added

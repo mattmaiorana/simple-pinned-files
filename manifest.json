@@ -1,7 +1,7 @@
 {
   "id": "simple-pinned-files",
   "name": "Simple Pinned Files",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "minAppVersion": "1.4.16",
   "description": "Pin files for quick access in a simple sidebar view.",
   "author": "Matt Maiorana",
